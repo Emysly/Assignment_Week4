@@ -32,7 +32,7 @@ public class Main {
 
 
         System.out.println();
-        System.out.println("Make request using first come first serve approach");
+        System.out.println("Make request using first come first serve approach....");
 
         library.makeRequestByFifo("Senior");
         library.makeRequestByFifo( "Teacher");
