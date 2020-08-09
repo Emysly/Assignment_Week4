@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.util.List;
 
 public interface LibraryUtil {
-    void makeRequestByPriority(String memberType);
+    void receiveRequestByPriority(String memberType);
     void lendBookByPriority(int bookId) throws IOException;
-    void makeRequestByFifo(String memberType);
+    void receiveRequestByFifo(String memberType);
     void lendBookByFifo(int bookId);
     void returnBook(int bookId);
     List<Book> getBooks();

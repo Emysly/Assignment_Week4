@@ -8,48 +8,48 @@ import java.util.Date;
 public class Main {
 
     public static void main(String[] args) {
-        Librarian library = new Librarian();
+        Librarian librarian = new Librarian();
 
-        library.addBook(new Book(1, "Things Fall Apart", "Chinua Achebe", 20.5,
+        librarian.addBook(new Book(1, "Things Fall Apart", "Chinua Achebe", 20.5,
                 "123-4567-890", new Date(), "Things fall apart is an interesting book",
                 10));
 
-        library.addBook(new Book(2, "Purple Hibiscus", "Chinua Achebe", 20.5,
+        librarian.addBook(new Book(2, "Purple Hibiscus", "Chinua Achebe", 20.5,
                 "123-4567-890", new Date(), "Purple hibiscus is an interesting book",
                 5));
 
         System.out.println("Make request using the members priority....");
 
-        library.makeRequestByPriority("Senior");
-        library.makeRequestByPriority( "Teacher");
-        library.makeRequestByPriority("Junior");
-        library.makeRequestByPriority( "Senior");
+        librarian.receiveRequestByPriority("Senior");
+        librarian.receiveRequestByPriority( "Teacher");
+        librarian.receiveRequestByPriority("Junior");
+        librarian.receiveRequestByPriority( "Senior");
 
-        library.lendBookByPriority(1);
-        library.lendBookByPriority(2);
-        library.lendBookByPriority(1);
-        library.lendBookByPriority(1);
+        librarian.lendBookByPriority(1);
+        librarian.lendBookByPriority(2);
+        librarian.lendBookByPriority(1);
+        librarian.lendBookByPriority(1);
 
 
         System.out.println();
         System.out.println("Make request using first come first serve approach....");
 
-        library.makeRequestByFifo("Senior");
-        library.makeRequestByFifo( "Teacher");
-        library.makeRequestByFifo("Junior");
-        library.makeRequestByFifo( "Senior");
+        librarian.receiveRequestByFifo("Senior");
+        librarian.receiveRequestByFifo( "Teacher");
+        librarian.receiveRequestByFifo("Junior");
+        librarian.receiveRequestByFifo( "Senior");
 
-        library.lendBookByFifo(1);
-        library.lendBookByFifo(2);
-        library.lendBookByFifo(1);
-        library.lendBookByFifo(1);
+        librarian.lendBookByFifo(1);
+        librarian.lendBookByFifo(2);
+        librarian.lendBookByFifo(1);
+        librarian.lendBookByFifo(1);
 
 
 
-        library.returnBook(1);
-        library.returnBook(2);
-        library.returnBook(1);
+        librarian.returnBook(1);
+        librarian.returnBook(2);
+        librarian.returnBook(1);
 
-        System.out.println(library.getBooks());
+        System.out.println(librarian.getBooks());
     }
 }

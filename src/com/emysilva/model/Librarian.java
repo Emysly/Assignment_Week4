@@ -36,7 +36,7 @@ public class Librarian implements LibraryUtil {
     //implementation 1
 
     //adds the members(teacher, senior, junior) into the queue by their priority
-    public void makeRequestByPriority(String memberType) {
+    public void receiveRequestByPriority(String memberType) {
         if (!memberType.equalsIgnoreCase("teacher")) {
             if (memberType.equalsIgnoreCase("senior")) {
                 priorities.add(2);
@@ -102,7 +102,7 @@ public class Librarian implements LibraryUtil {
     //implementation 2
 
     //adds the members(teacher, senior, junior) into the queue by first come first serve approach
-    public void makeRequestByFifo(String memberType) {
+    public void receiveRequestByFifo(String memberType) {
         if (memberType.equalsIgnoreCase("teacher")) {
             fifo.add(1);
             members.add(memberType);
