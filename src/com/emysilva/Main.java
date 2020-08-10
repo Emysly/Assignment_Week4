@@ -26,7 +26,7 @@ public class Main {
         librarian.receiveRequestByPriority( "Senior");
 
         librarian.lendBookByPriority(1);
-        librarian.lendBookByPriority(1);
+        librarian.lendBookByPriority(2);
         librarian.lendBookByPriority(1);
         librarian.lendBookByPriority(1);
 
