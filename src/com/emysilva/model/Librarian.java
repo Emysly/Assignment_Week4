@@ -12,7 +12,6 @@ public class Librarian implements LibraryUtil {
     }
 
     private final List<Book> books = new ArrayList<>();
-    private final List<String> members = new ArrayList<>();
     private final Queue<Integer> priorities = new PriorityQueue<>();
     private final LinkedList<Integer> fifo = new LinkedList<>();
 
@@ -33,21 +32,18 @@ public class Librarian implements LibraryUtil {
         this.password = password;
     }
 
+
+    Book b = new Book();
+
     //implementation 1
 
     //adds the members(teacher, senior, junior) into the queue by their priority
     public void receiveRequestByPriority(String memberType) {
-        if (!memberType.equalsIgnoreCase("teacher")) {
-            if (memberType.equalsIgnoreCase("senior")) {
-                priorities.add(2);
-                members.add(memberType);
-            } else if (memberType.equalsIgnoreCase("junior")) {
-                priorities.add(3);
-                members.add(memberType);
-            }
-        } else {
-            priorities.add(1);
-            members.add(memberType);
+        switch(memberType.toLowerCase()) {
+            case "teacher" -> priorities.add(1);
+            case "senior" -> priorities.add(2);
+            case "junior" -> priorities.add(3);
+            default -> System.err.println("Member's type can only be of teacher, senior or junior");
         }
     }
 
@@ -55,6 +51,10 @@ public class Librarian implements LibraryUtil {
     //before the book which is requested is lend out, it checks their priority
     // and gives the member with the highest priority first
     public void lendBookByPriority(int bookId) throws NullPointerException {
+
+        //used scanner to get the librarian login details as specified in the librarian properties.
+        //a librarian needs to produce his login details to be able to lend book to the members, just
+        //like in real life scenario a librarian will have the key to the library.
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter your login id");
         String login_id = scanner.nextLine();
@@ -64,35 +64,7 @@ public class Librarian implements LibraryUtil {
         //checks if the librarian login details are correct before he can get access to lend book
         if (login_id.equalsIgnoreCase(getLogin_id()) && password.equalsIgnoreCase(getPassword())) {
             int poll = priorities.poll();
-
-            if (poll != 1) {
-                if (poll != 2) {
-                    if (poll == 3) {
-                        for (Book book2 : books) {
-                            if (book2.getBook_id() == bookId) {
-                                System.out.println("Junior borrowed " + book2.getTitle());
-                            }
-                        }
-                    } else {
-                        System.err.println("Book can only be borrowed by teachers and students");
-                    }
-                } else {
-                    for (Book book1 : books) {
-                        if (book1.getBook_id() == bookId) {
-                            System.out.println("Senior borrowed " + book1.getTitle());
-                            break;
-                        }
-                    }
-                }
-            } else {
-                for (Book book1 : books) {
-                    if (book1.getBook_id() == bookId) {
-                        System.out.println("Teacher borrowed " + book1.getTitle());
-                        break;
-                    }
-                }
-            }
-            availableBook(bookId);
+            switchCase(bookId, poll);
         } else {
             System.err.println("check your details and try again...");
         }
@@ -103,21 +75,21 @@ public class Librarian implements LibraryUtil {
 
     //adds the members(teacher, senior, junior) into the queue by first come first serve approach
     public void receiveRequestByFifo(String memberType) {
-        if (memberType.equalsIgnoreCase("teacher")) {
-            fifo.add(1);
-            members.add(memberType);
-        } else if (memberType.equalsIgnoreCase("senior")) {
-            fifo.add(2);
-            members.add(memberType);
-        } else if (memberType.equalsIgnoreCase("junior")) {
-            fifo.add(3);
-            members.add(memberType);
+        switch(memberType.toLowerCase()) {
+            case "teacher" -> fifo.add(1);
+            case "senior" -> fifo.add(2);
+            case "junior" -> fifo.add(3);
+            default -> System.err.println("Member's type can only be of teacher, senior or junior");
         }
     }
 
     //before the book which is requested is lend out, it checks which member comes first
     // and gives the member first
     public void lendBookByFifo(int bookId) throws NullPointerException {
+
+        //used scanner to get the librarian login details as specified in the librarian properties
+        //a librarian needs to produce his login details to be able to lend book to the members, just
+        //like in real life scenario a librarian will have the key to the library.
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter your login id");
         String login_id = scanner.nextLine();
@@ -126,34 +98,11 @@ public class Librarian implements LibraryUtil {
 
         if (login_id.equalsIgnoreCase(getLogin_id()) && password.equalsIgnoreCase(getPassword())) {
             int poll = fifo.pollFirst();
-
-            if (poll == 1) {
-                for (Book book1 : books) {
-                    if (book1.getBook_id() == bookId) {
-                        System.out.println("Teacher borrowed " + book1.getTitle());
-                        break;
-                    }
-                }
-            } else if (poll == 2) {
-                for (Book book1 : books) {
-                    if (book1.getBook_id() == bookId) {
-                        System.out.println("Senior borrowed " + book1.getTitle());
-                        break;
-                    }
-                }
-            } else if (poll == 3) {
-                for (Book book2 : books) {
-                    if (book2.getBook_id() == bookId) {
-                        System.out.println("Junior borrowed " + book2.getTitle());
-                    }
-                }
-            } else {
-                System.err.println("Book can only be borrowed by teachers and students");
-            }
-            availableBook(bookId);
+            switchCase(bookId, poll);
         }
     }
 
+    //checks if book is available or taken
     private void availableBook(int bookId) {
         Book availableBook = null;
         for (Book book : books) {
@@ -170,7 +119,6 @@ public class Librarian implements LibraryUtil {
         }
     }
 
-
     //returns the book to the library
     public void returnBook(int bookId) {
         for (Book book: books) {
@@ -180,7 +128,6 @@ public class Librarian implements LibraryUtil {
             }
         }
     }
-
 
     //gets all books
     public List<Book> getBooks() {
@@ -214,4 +161,35 @@ public class Librarian implements LibraryUtil {
     }
 
 
+    //a method that checks the switch cases for both implementation 1(based on priority)
+    // and implementation 2(based on first come first serve)
+    private void switchCase(int bookId, int poll) {
+        switch (poll) {
+            case 1 -> {
+                for (Book book1 : books) {
+                    if (book1.getBook_id() == bookId) {
+                        System.out.println("Teacher borrowed " + book1.getTitle());
+                        break;
+                    }
+                }
+            }
+            case 2 -> {
+                for (Book book1 : books) {
+                    if (book1.getBook_id() == bookId) {
+                        System.out.println("Senior borrowed " + book1.getTitle());
+                        break;
+                    }
+                }
+            }
+            case 3 -> {
+                for (Book book2 : books) {
+                    if (book2.getBook_id() == bookId) {
+                        System.out.println("Junior borrowed " + book2.getTitle());
+                    }
+                }
+            }
+            default -> System.err.println("Book can only be borrowed by teachers and students");
+        }
+        availableBook(bookId);
+    }
 }

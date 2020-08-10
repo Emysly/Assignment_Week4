@@ -1,6 +1,7 @@
 package com.emysilva.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class Book {
     private int bookId;
@@ -30,7 +31,7 @@ public class Book {
     }
 
 
-//checks if the book u are searching for still has some copy left
+    //checks if the book u are searching for still has some copy left
     public boolean status() {
         boolean status;
         if (numberOfCopies == 0) {
