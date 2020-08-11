@@ -1,9 +1,10 @@
 package com.emysilva.model;
 
-import java.util.Date;
-import java.util.List;
+import com.emysilva.interfaces.BookUtil;
 
-public class Book {
+import java.util.Date;
+
+public class Book implements BookUtil {
     private int bookId;
     private String title;
     private String author;
@@ -14,9 +15,6 @@ public class Book {
     private int numberOfCopies;
     private int actualCopies;
 
-    public Book() {
-
-    }
 
     public Book(int bookId, String title, String author, double price, String isbn, Date publishDate, String description, int numberOfCopies) {
         this.bookId = bookId;

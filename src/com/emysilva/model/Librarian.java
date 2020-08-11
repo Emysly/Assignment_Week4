@@ -8,6 +8,7 @@ import java.util.*;
 public class Librarian implements LibraryUtil {
     private String login_id = "admin";
     private String password = "password";
+    protected Library library;
 
     public Librarian() {
     }
@@ -34,7 +35,6 @@ public class Librarian implements LibraryUtil {
     }
 
 
-    Book b = new Book();
 
     //implementation 1
 
@@ -64,8 +64,8 @@ public class Librarian implements LibraryUtil {
 
         //checks if the librarian login details are correct before he can get access to lend book
         if (login_id.equalsIgnoreCase(getLogin_id()) && password.equalsIgnoreCase(getPassword())) {
-            int poll = priorities.poll();
-            switchCase(bookId, poll);
+            String poll = String.valueOf(priorities.poll());
+            switchCase(bookId, Integer.parseInt(poll));
         } else {
             System.err.println("check your details and try again...");
         }
@@ -98,8 +98,8 @@ public class Librarian implements LibraryUtil {
         String password = scanner.nextLine();
 
         if (login_id.equalsIgnoreCase(getLogin_id()) && password.equalsIgnoreCase(getPassword())) {
-            int poll = fifo.poll();
-            switchCase(bookId, poll);
+            String poll = String.valueOf(fifo.poll());
+            switchCase(bookId, Integer.parseInt(poll));
         }
     }
 
@@ -159,6 +159,10 @@ public class Librarian implements LibraryUtil {
             }
         }
         return false;
+    }
+
+    public String getLibraryName() {
+        return library.getName();
     }
 
 

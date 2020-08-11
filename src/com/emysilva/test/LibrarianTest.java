@@ -34,7 +34,7 @@ class LibrarianTest {
 
     @org.junit.jupiter.api.Test
     void getBooks() {
-        assertEquals(true, librarian.getBooks().size() > 0);
+        assertTrue(librarian.getBooks().size() > 0);
     }
 
 
