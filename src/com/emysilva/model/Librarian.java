@@ -1,5 +1,6 @@
 package com.emysilva.model;
 
+import com.emysilva.enums.Priority;
 import com.emysilva.interfaces.LibraryUtil;
 
 import java.util.*;
@@ -13,7 +14,7 @@ public class Librarian implements LibraryUtil {
 
     private final List<Book> books = new ArrayList<>();
     private final Queue<Integer> priorities = new PriorityQueue<>();
-    private final LinkedList<Integer> fifo = new LinkedList<>();
+    private final Queue<Integer> fifo = new ArrayDeque<>();
 
 
     public String getLogin_id() {
@@ -40,9 +41,9 @@ public class Librarian implements LibraryUtil {
     //adds the members(teacher, senior, junior) into the queue by their priority
     public void receiveRequestByPriority(String memberType) {
         switch(memberType.toLowerCase()) {
-            case "teacher" -> priorities.add(1);
-            case "senior" -> priorities.add(2);
-            case "junior" -> priorities.add(3);
+            case "teacher" -> priorities.add(Priority.TEACHER.ordinal());
+            case "senior" -> priorities.add(Priority.SENIOR.ordinal());
+            case "junior" -> priorities.add(Priority.JUNIOR.ordinal());
             default -> System.err.println("Member's type can only be of teacher, senior or junior");
         }
     }
@@ -76,9 +77,9 @@ public class Librarian implements LibraryUtil {
     //adds the members(teacher, senior, junior) into the queue by first come first serve approach
     public void receiveRequestByFifo(String memberType) {
         switch(memberType.toLowerCase()) {
-            case "teacher" -> fifo.add(1);
-            case "senior" -> fifo.add(2);
-            case "junior" -> fifo.add(3);
+            case "teacher" -> fifo.add(Priority.TEACHER.ordinal());
+            case "senior" -> fifo.add(Priority.SENIOR.ordinal());
+            case "junior" -> fifo.add(Priority.JUNIOR.ordinal());
             default -> System.err.println("Member's type can only be of teacher, senior or junior");
         }
     }
@@ -97,7 +98,7 @@ public class Librarian implements LibraryUtil {
         String password = scanner.nextLine();
 
         if (login_id.equalsIgnoreCase(getLogin_id()) && password.equalsIgnoreCase(getPassword())) {
-            int poll = fifo.pollFirst();
+            int poll = fifo.poll();
             switchCase(bookId, poll);
         }
     }
