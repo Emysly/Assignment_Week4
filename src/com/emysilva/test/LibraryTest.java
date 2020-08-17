@@ -13,7 +13,7 @@ class LibraryTest {
 
     @BeforeEach
     void setUp() {
-        library = new Library("Decagon");
+        library = new Library();
     }
 
     @Test

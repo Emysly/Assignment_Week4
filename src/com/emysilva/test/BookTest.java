@@ -40,11 +40,6 @@ class BookTest {
     }
 
     @Test
-    void getBook_id() {
-        assertNotNull(book.getBook_id());
-    }
-
-    @Test
     void getTitle() {
         assertNotNull(book.getTitle());
     }
@@ -52,11 +47,6 @@ class BookTest {
     @Test
     void getAuthor() {
         assertNotNull(book.getAuthor());
-    }
-
-    @Test
-    void getPrice() {
-        assertNotNull(book.getPrice());
     }
 
     @Test
@@ -72,11 +62,6 @@ class BookTest {
     @Test
     void getDescription() {
         assertNotNull(book.getDescription());
-    }
-
-    @Test
-    void getNumberOfCopies() {
-        assertNotNull(book.getNumberOfCopies());
     }
 
 

@@ -1,14 +1,16 @@
 package com.emysilva.model;
 
-import com.emysilva.enums.Priority;
 import com.emysilva.interfaces.LibraryUtil;
 
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.emysilva.enums.Priority.*;
 
 public class Librarian implements LibraryUtil {
-    private String login_id = "admin";
-    private String password = "password";
-    protected Library library;
 
     public Librarian() {
     }
@@ -19,31 +21,21 @@ public class Librarian implements LibraryUtil {
 
 
     public String getLogin_id() {
-        return login_id;
-    }
-
-    public void setLogin_id(String login_id) {
-        this.login_id = login_id;
+        return "admin";
     }
 
     public String getPassword() {
-        return password;
+        return "password";
     }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
 
     //implementation 1
 
     //adds the members(teacher, senior, junior) into the queue by their priority
     public void receiveRequestByPriority(String memberType) {
         switch(memberType.toLowerCase()) {
-            case "teacher" -> priorities.add(Priority.TEACHER.ordinal());
-            case "senior" -> priorities.add(Priority.SENIOR.ordinal());
-            case "junior" -> priorities.add(Priority.JUNIOR.ordinal());
+            case "teacher" -> priorities.add(TEACHER.ordinal());
+            case "senior" -> priorities.add(SENIOR.ordinal());
+            case "junior" -> priorities.add(JUNIOR.ordinal());
             default -> System.err.println("Member's type can only be of teacher, senior or junior");
         }
     }
@@ -77,9 +69,9 @@ public class Librarian implements LibraryUtil {
     //adds the members(teacher, senior, junior) into the queue by first come first serve approach
     public void receiveRequestByFifo(String memberType) {
         switch(memberType.toLowerCase()) {
-            case "teacher" -> fifo.add(Priority.TEACHER.ordinal());
-            case "senior" -> fifo.add(Priority.SENIOR.ordinal());
-            case "junior" -> fifo.add(Priority.JUNIOR.ordinal());
+            case "teacher" -> fifo.add(TEACHER.ordinal());
+            case "senior" -> fifo.add(SENIOR.ordinal());
+            case "junior" -> fifo.add(JUNIOR.ordinal());
             default -> System.err.println("Member's type can only be of teacher, senior or junior");
         }
     }
@@ -106,13 +98,21 @@ public class Librarian implements LibraryUtil {
     //checks if book is available or taken
     private void availableBook(int bookId) {
         Book availableBook = null;
+
+//        Optional<Book> bookTaken = books.stream()
+//                .filter(book -> book.getBookId() == bookId)
+//                .findAny();
+//
+//        System.out.println(bookTaken);
+
         for (Book book : books) {
-            if (book.getBook_id() == bookId) {
+            if (book.getBookId() == bookId) {
                 availableBook = book;
                 break;
             }
 
         }
+
         if (availableBook == null) {
             System.out.println("Book taken");
         } else {
@@ -122,17 +122,15 @@ public class Librarian implements LibraryUtil {
 
     //returns the book to the library
     public void returnBook(int bookId) {
-        for (Book book: books) {
-            if (book.getBook_id() == bookId) {
-                book.returnBook();
-                break;
-            }
-        }
+        Predicate<Book> bookPredicate = book -> book.getBookId() == bookId;
+        books.stream()
+                .filter(bookPredicate)
+                .forEach(Book::returnBook);
     }
 
     //gets all books
-    public List<Book> getBooks() {
-        return books;
+    public void getBooks() {
+        books.forEach(System.out::println);
     }
 
     //adds book to the list of books
@@ -142,7 +140,10 @@ public class Librarian implements LibraryUtil {
 
     //gets books using their title
     public void getBooksByTitle(String title) {
-        books.stream().filter(book -> book.getTitle().equalsIgnoreCase(title)).forEach(System.out::println);
+        Predicate<Book> bookTitlePredicate = book -> book.getTitle().equalsIgnoreCase(title);
+        books.stream()
+                .filter(bookTitlePredicate)
+                .forEach(System.out::println);
     }
 
     //remove book from the list of books
@@ -152,47 +153,30 @@ public class Librarian implements LibraryUtil {
 
 
     //checks if a book still has a copy
-    public boolean getStatus() {
-        for (Book book: books) {
-            if (book.getNumberOfCopies() > 0) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public String getLibraryName() {
-        return library.getName();
+    public boolean getStatus(int bookId) {
+        Predicate<Book> bookStatusPredicate = book -> book.getBookId() == bookId && book.getNumberOfCopies() > 0;
+        return books.stream()
+               .anyMatch(bookStatusPredicate);
     }
 
 
     //a method that checks the switch cases for both implementation 1(based on priority)
     // and implementation 2(based on first come first serve)
     private void switchCase(int bookId, int poll) {
+        Predicate<Book> bookPredicate = book -> book.getBookId() == bookId;
         switch (poll) {
-            case 1 -> {
-                for (Book book1 : books) {
-                    if (book1.getBook_id() == bookId) {
-                        System.out.println("Teacher borrowed " + book1.getTitle());
-                        break;
-                    }
-                }
-            }
-            case 2 -> {
-                for (Book book1 : books) {
-                    if (book1.getBook_id() == bookId) {
-                        System.out.println("Senior borrowed " + book1.getTitle());
-                        break;
-                    }
-                }
-            }
-            case 3 -> {
-                for (Book book2 : books) {
-                    if (book2.getBook_id() == bookId) {
-                        System.out.println("Junior borrowed " + book2.getTitle());
-                    }
-                }
-            }
+            case 1 -> books.stream()
+                        .filter(bookPredicate)
+                        .forEach(book -> System.out.println("Teacher borrowed " + book.getTitle()));
+
+            case 2 -> books.stream()
+                        .filter(bookPredicate)
+                        .forEach(book -> System.out.println("Senior borrowed " + book.getTitle()));
+
+            case 3 -> books.stream()
+                        .filter(bookPredicate)
+                        .forEach(book -> System.out.println("Junior borrowed " + book.getTitle()));
+
             default -> System.err.println("Book can only be borrowed by teachers and students");
         }
         availableBook(bookId);

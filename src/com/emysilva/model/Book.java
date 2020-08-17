@@ -3,17 +3,20 @@ package com.emysilva.model;
 import com.emysilva.interfaces.BookUtil;
 
 import java.util.Date;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class Book implements BookUtil {
-    private int bookId;
-    private String title;
-    private String author;
-    private double price;
-    private String isbn;
-    private Date publishDate;
-    private String description;
+    private final int bookId;
+    private final String title;
+    private final String author;
+    private final double price;
+    private final String isbn;
+    private final Date publishDate;
+    private final String description;
+    private final int actualCopies;
     private int numberOfCopies;
-    private int actualCopies;
 
 
     public Book(int bookId, String title, String author, double price, String isbn, Date publishDate, String description, int numberOfCopies) {
@@ -24,8 +27,8 @@ public class Book implements BookUtil {
         this.isbn = isbn;
         this.publishDate = publishDate;
         this.description = description;
-        this.numberOfCopies = numberOfCopies;
         this.actualCopies = numberOfCopies;
+        this.numberOfCopies = numberOfCopies;
     }
 
 
@@ -65,76 +68,40 @@ public class Book implements BookUtil {
         }
     }
 
-    public int getBook_id() {
+    public int getBookId() {
         return bookId;
-    }
-
-    public void setBook_id(int bookId) {
-        this.bookId = bookId;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getAuthor() {
         return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
     public String getIsbn() {
         return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
     }
 
     public Date getPublishDate() {
         return publishDate;
     }
 
-    public void setPublishDate(Date publishDate) {
-        this.publishDate = publishDate;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public int getNumberOfCopies() {
         return numberOfCopies;
     }
 
-    public void setNumberOfCopies(int numberOfCopies) {
-        this.numberOfCopies = numberOfCopies;
-    }
-
     public int getActualCopies() {
         return actualCopies;
-    }
-
-    public void setActualCopies(int actualCopies) {
-        this.actualCopies = actualCopies;
     }
 
     @Override
@@ -150,6 +117,4 @@ public class Book implements BookUtil {
                 ", numberOfCopies=" + numberOfCopies +
                 '}';
     }
-
-
 }

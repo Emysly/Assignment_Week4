@@ -33,17 +33,11 @@ class LibrarianTest {
     }
 
     @org.junit.jupiter.api.Test
-    void getBooks() {
-        assertTrue(librarian.getBooks().size() > 0);
-    }
-
-
-    @org.junit.jupiter.api.Test
     void getStatus() {
         if (book.getNumberOfCopies() > 0) {
-         assertTrue(librarian.getStatus());
+         assertTrue(librarian.getStatus(book.getBookId()));
         } else {
-            assertFalse(librarian.getStatus());
+            assertFalse(librarian.getStatus(book.getBookId()));
         }
     }
 
